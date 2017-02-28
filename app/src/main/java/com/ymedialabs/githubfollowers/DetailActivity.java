@@ -65,21 +65,21 @@ public class DetailActivity extends AppCompatActivity {
 
     private void setDetails(JSONObject data) throws JSONException {
 
-        user_name.setText(data.getString(TAG_LOGIN).toString());
-        name.setText(data.getString(TAG_NAME).toString());
+        user_name.setText(data.getString(TAG_LOGIN));
+        name.setText(data.getString(TAG_NAME));
 
-        following_count.setText(data.getString(TAG_FOLLOWING).toString());
-        repo_count.setText(data.getString(TAG_REPOS).toString());
-        follower_count.setText(data.getString(TAG_FOLLOWERS).toString());
+        following_count.setText(data.getString(TAG_FOLLOWING));
+        repo_count.setText(data.getString(TAG_REPOS));
+        follower_count.setText(data.getString(TAG_FOLLOWERS));
 
-        String location = data.getString(TAG_LOCATION).toString();
+        String location = data.getString(TAG_LOCATION);
         if (location != null && !location.equals("null") && !location.isEmpty()) {
             user_location.setText(location);
         }
 
-        String email_id = data.getString(TAG_EMAIL).toString();
-        if (email_id != null && !email_id.equals("null") && !email_id.isEmpty()) {
-            user_email.setText(data.getString(TAG_EMAIL).toString());
+        String email_id = data.getString(TAG_EMAIL);
+        if (!email_id.equals("null") && !email_id.isEmpty()) {
+            user_email.setText(data.getString(TAG_EMAIL));
         }
     }
 

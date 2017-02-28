@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import com.ymedialabs.githubfollowers.model.JSONClient;
 import com.ymedialabs.githubfollowers.model.JSONDataParser;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.List;
 
@@ -42,18 +44,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Void doInBackground(Void... params) {
                 JSONClient jsonClient = new JSONClient();
-                data = jsonClient.getUserFollowers(userName);
+                try {
+                    data = jsonClient.getUserFollowers(userName);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                List<String> user_name = JSONDataParser.getUserAllFollowersNames(data);
-                List<String> user_image_url = JSONDataParser.getUserAllFollowersImageURL(data);
-                RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter(MainActivity.this, user_name, user_image_url);
-                recyclerView.setAdapter(rcAdapter);
-                rcAdapter.notifyItemInserted(user_name.size());
+                if (data != null) {
+                    List<String> user_name = JSONDataParser.getUserAllFollowersNames(data);
+                    List<String> user_image_url = JSONDataParser.getUserAllFollowersImageURL(data);
+                    RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter(MainActivity.this, user_name, user_image_url);
+                    recyclerView.setAdapter(rcAdapter);
+                    rcAdapter.notifyItemInserted(user_name.size());
+                }
             }
         }.execute();
     }
@@ -79,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public boolean onQueryTextSubmit(String query) {
-                if (query != null)
+                if (query != null && !query.isEmpty())
                     getJSONOfUserFollower(query);
                 searchView.clearFocus();
                 return true;

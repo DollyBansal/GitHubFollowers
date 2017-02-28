@@ -19,9 +19,9 @@ import java.net.URL;
  * Service class to call github endpoint and parse the output
  */
 public class JSONClient {
-    final String hostname = "https://api.github.com";
+    private final String hostname = "https://api.github.com";
 
-    public static String httpCall(String endPoint) {
+    private static String httpCall(String endPoint) {
         try {
             URL url = new URL(endPoint);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -63,18 +63,14 @@ public class JSONClient {
      * @throws MalformedURLException
      * @throws JSONException
      */
-    public JSONArray getUserFollowers(String userName) {
-        try {
-            String endPoint = hostname + "/users/" + userName + "/followers";
-            String result = httpCall(endPoint);
-            if (result != null) {
-                return new JSONArray(result);
-            } else return null;
+    public JSONArray getUserFollowers(String userName) throws JSONException {
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
+        String endPoint = hostname + "/users/" + userName + "/followers";
+        String result = httpCall(endPoint);
+        if (result != null) {
+            return new JSONArray(result);
+        } else return null;
+
     }
 
     /**
